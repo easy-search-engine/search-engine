@@ -1,0 +1,13 @@
+{
+    "name": "easy-search-engine/search-engine",
+    "type": "project",
+    "require": {
+        "silex/silex": "^2.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit-selenium": "^3.0"
+    },
+    "scripts": {
+        "test": "phpunit tests"
+    }
+}
