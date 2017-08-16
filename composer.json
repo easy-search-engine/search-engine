@@ -8,7 +8,8 @@
         "symfony/validator": "^3.3"
     },
     "require-dev": {
-        "phpunit/phpunit-selenium": "^3.0"
+        "phpunit/phpunit-selenium": "^3.0",
+        "symfony/var-dumper": "^3.3"
     },
     "scripts": {
         "test": "phpunit tests"
