@@ -7,12 +7,12 @@ $app->post('/item', function (Request $request) use ($app) {
         "data" => [],
         "errors" => []
     ];
-    
+
     try {
-        $constraint = new Assert\Collection([
-            'src' => [new Assert\NotBlank(), new Assert\Length(['max'=>200]), new Assert\Url()],
-            'rating' => [new Assert\NotBlank(), new Assert\GreaterThanOrEqual(0)],
-            'date' => [new Assert\NotBlank, new Assert\DateTime()],
+        $constraint = new \Assert\Collection([
+            'src' => [new \Assert\NotBlank(), new \Assert\Length(['max'=>200]), new \Assert\Url()],
+            'rating' => [new \Assert\NotBlank(), new \Assert\GreaterThanOrEqual(0)],
+            'date' => [new \Assert\NotBlank, new \Assert\DateTime()],
         ]);
 
         $errors = $app['validator']->validate($request->request->getIterator(), $constraint);

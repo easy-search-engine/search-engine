@@ -1,6 +1,7 @@
 {
     "name": "easy-search-engine/search-engine",
     "type": "project",
+    "description": "",
     "require": {
         "silex/silex": "^2.2",
         "doctrine/dbal": "~2.2",
@@ -18,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": ""
+            "App\\": "./"
         }
     }
 }

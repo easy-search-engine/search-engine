@@ -1,4 +1,6 @@
 <?php
+namespace App;
 
-class SearchEngine extends Silex\Application
+
+class SearchEngine extends \Silex\Application
 {}

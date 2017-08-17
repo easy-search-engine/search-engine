@@ -1,6 +1,8 @@
 <?php
 namespace App\Tests;
-use Silex\WebTestCase;
+
+
+use \Silex\WebTestCase;
 use App\Controllers\Item;
 
 class ItemTest extends WebTestCase
@@ -20,5 +22,9 @@ class ItemTest extends WebTestCase
   {
       $client = $this->createClient();
       $crawler = $client->request('POST', '/item');
+      $responseData = json_decode($client->getResponse()->getContent());
+      $this->assertEquals(False, $responseData['success']);
+
+      $this->assertGreaterThan(0, $responseData['errors']);
   }
 }
