@@ -40,10 +40,14 @@ $app->post('/item', function (Request $request, Application $app) {
             throw new Exception("Cannot create item!");
         }
         
-        $response['data'][] = ["Success!"];
+        $response['data']['message'] = "Success!";
+        $response['data']['item'] = $app['db']
+            ->executeQuery("SELECT * FROM item WHERE id=?;", [
+                $app['db']->lastInsertId()
+            ])->fetch();
         
     } catch (Exception $e) {
-        
+
         /**
         * Request failed
         */
