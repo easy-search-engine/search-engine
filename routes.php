@@ -1,6 +1,9 @@
 <?php
+use Silex\Application;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
-$app->post('/item', function (Request $request) use ($app) {
+$app->post('/item', function (Request $request, Application $app) {
     $responseCode = 200;
     $response = [
         "success" => true,
