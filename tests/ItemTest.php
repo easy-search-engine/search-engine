@@ -21,10 +21,10 @@ class ItemTest extends WebTestCase
   public function testCreationFromRequest()
   {
       $client = $this->createClient();
-      $crawler = $client->request('POST', '/item');
-      $responseData = json_decode($client->getResponse()->getContent());
+      $crawler = $client->request('POST', '/item', []);
+      $responseData = json_decode($client->getResponse()->getContent(), true);
       $this->assertEquals(False, $responseData['success']);
 
-      $this->assertGreaterThan(0, $responseData['errors']);
+      $this->assertGreaterThan(0, count($responseData['errors']));
   }
 }

@@ -2,9 +2,9 @@
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\Constraints as Assert;
 
 $app->post('/item', function (Request $request, Application $app) {
-    $responseCode = 200;
     $response = [
         "success" => true,
         "data" => [],
@@ -12,18 +12,21 @@ $app->post('/item', function (Request $request, Application $app) {
     ];
 
     try {
-        $constraint = new \Assert\Collection([
-            'src' => [new \Assert\NotBlank(), new \Assert\Length(['max'=>200]), new \Assert\Url()],
-            'rating' => [new \Assert\NotBlank(), new \Assert\GreaterThanOrEqual(0)],
-            'date' => [new \Assert\NotBlank, new \Assert\DateTime()],
+        $constraint = new Assert\Collection([
+            'src' => [new Assert\NotBlank(), new Assert\Length(['max'=>200]), new Assert\Url()],
+            'rating' => [new Assert\NotBlank(), new Assert\GreaterThanOrEqual(0)],
+            'date' => [new Assert\NotBlank, new Assert\DateTime()],
         ]);
 
         $errors = $app['validator']->validate($request->request->getIterator(), $constraint);
 
         if (count($errors) > 0) {
             foreach ($errors as $error) 
-                $response['errors'][] = $error;
-            throw new Exception("Validation errors has occured!");
+                $response['errors'][] = [
+                    "property" => $error->getPropertyPath(),
+                    "message" => $error->getMessage()
+                ];
+            throw new Exception("Validation errors!");
         }
 
         $stmt = $app['db']->prepare("INSERT INTO item VALUES (NULL, :src, :rating, :date);");
@@ -40,9 +43,21 @@ $app->post('/item', function (Request $request, Application $app) {
         $response['data'][] = ["Success!"];
         
     } catch (Exception $e) {
+        
+        /**
+        * Request failed
+        */
         $response['success'] = false;
-        $response['errors'][] = $e->getMessage();
+
+        /**
+        * Make sure that general info is on first place
+        */
+        $response['errors'] = array_merge([[
+            "property" => "*",
+            "message" => $e->getMessage()
+        ]], $response['errors']);
+
     } finally {
-        return new Response(json_encode($response), $responseCode);
+        return $app->json($response);
     }
 });
